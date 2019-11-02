@@ -4,11 +4,69 @@
 package scrap.heap.refactor;
 
 import org.junit.Test;
+
+import scrap.heap.refactor.entries.Balloon;
+import scrap.heap.refactor.entries.BalloonColor;
+import scrap.heap.refactor.entries.Cake;
+import scrap.heap.refactor.entries.CakeColor;
+import scrap.heap.refactor.entries.Flavor;
+import scrap.heap.refactor.entries.FrostingFlavor;
+import scrap.heap.refactor.entries.ItemToOrder;
+import scrap.heap.refactor.entries.Material;
+import scrap.heap.refactor.entries.Order;
+import scrap.heap.refactor.entries.Shape;
+import scrap.heap.refactor.entries.Size;
+
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppTest {
     @Test public void testAppHasAGreeting() {
         App classUnderTest = new App();
         assertNotNull("app should have a greeting", classUnderTest.getGreeting());
     }
+    
+    @Test
+    public void testOrderingMethods() {
+    	
+       	//valid
+    	Order order1 = App.order("red", "mylar", "4", "chocolate", "chocolate", "circle", "large", "brown" );
+        assertNotNull("should return order", order1);
+
+        //wrong "chocelate" value
+        //exception print out of stackTrace is expected
+        Order order2 = App.order("blue", "latex", "7", "Vanilla", "chocelate", "square", "med", "brown" );
+        assertNull(order2);
+        
+        
+        //wrong number of balloons
+        Order order3 = App.order("blue", "latex", "something", "Vanilla", "chocelate", "square", "med", "brown" );
+        Order order4 = App.order("blue", "latex", "-2", "Vanilla", "chocelate", "square", "med", "brown" );
+        assertNull(order3);
+        assertNull(order4);
+        
+        Order order5 = App.order(null, "", "2", null, "", null, "med", "brown" );
+        assertNotNull("should return order", order5);
+        
+        
+        //check that both methods returns the same output;
+        Balloon balloon = new Balloon(BalloonColor.Red,Material.Mylar);
+        Cake cake = new Cake(FrostingFlavor.Chocolate,Flavor.Chocolate,Shape.Circle,Size.Large,CakeColor.Brown);
+    	List<ItemToOrder> list = new ArrayList<ItemToOrder>();
+    	
+    	list.add(balloon);
+    	list.add(balloon);
+    	list.add(balloon);
+    	list.add(balloon);
+    	list.add(cake);
+    	
+        Order order100 = App.order(list);
+        assertEquals(order1.getItem(),order100.getItem());
+
+    	
+    }
+    
+    
 }
